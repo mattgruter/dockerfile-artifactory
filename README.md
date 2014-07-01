@@ -6,26 +6,26 @@ Link: [mattgruter/artifactory](https://registry.hub.docker.com/u/mattgruter/arti
 
 
 ## Volumes
-Artifactories data, logs and backup directories are exported as volumes:
+Artifactories `data`, `logs` and `backup` directories are exported as volumes:
 
-  /artifactory/data
-  /artifactory/logs
-  /artifactory/backup
+    /artifactory/data
+    /artifactory/logs
+    /artifactory/backup
 
 ## Ports
-Artifactory is accessible through port 8081.
+Artifactory is accessible through port `8081`.
 
 ## Example
 To run an artifactory container simply write:
     
     docker run -P mattgruter/artifactory
 
-## Switching from Artifactory OSS to Artifactory Pro
+## Switching Artifactory Pro
 If you are using Artifactory Pro, the artifactory war archive has to be replaced. The Dockerfile includes `ONBUILD` triggers for this purpose. Rename the artifactory distribution ZIP to `artifactory.zip` and create a simple Dockerfile in the same directory:
 
     FROM mattgruter/artifactory
 
-Now build your child docker image.
+Now build your child docker image:
 
     docker build -t yourname/myartifactory
 
