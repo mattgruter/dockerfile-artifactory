@@ -1,37 +1,41 @@
-FROM dockerfile/java 
+FROM tutum/tomcat:7.0
 
 MAINTAINER Matthias Grüter <matthias@grueter.name>
 
-# Reset workdir to /
-WORKDIR /
+# Disable debconf frontend warnings.
+ENV DEBIAN_FRONTEND noninteractive
 
-# Fetch and install Artifactory OSS.
+# Unzip is needed to install Artifactory.
+RUN apt-get -y install unzip
+
+# Disable Tomcat's manager application.
+RUN rm -rf /tomcat/webapps/*
+
+# Redirect to the Artifactory servlet from root.
+RUN mkdir /tomcat/webapps/ROOT
+RUN echo '<html><head><meta http-equiv="refresh" content="0;URL=artifactory/"></head><body></body></html>' > /tomcat/webapps/ROOT/index.html
+
+# Fetch and install Artifactory OSS war archive.
 RUN \
   wget --quiet http://dl.bintray.com/jfrog/artifactory/artifactory-3.2.2.zip -O artifactory.zip && \
-  unzip artifactory.zip && \
-  rm artifactory.zip && \
-  mv artifactory-* artifactory
+  unzip -j artifactory.zip "artifactory-*/webapps/artifactory.war" -d /tomcat/webapps && \
+  rm artifactory.zip
 
-# Add hooks to install custom artifactory.zip (i.e. Artifactory Pro) over the default OSS installation.
-ONBUILD ADD ./artifactory.zip /newartifactory/
-ONBUILD RUN \
-  unzip /newartifactory/artifactory.zip -d /newartifactory && \
-  mv /newartifactory/artifactory-*/webapps/artifactory.war /artifactory/webapps/artifactory.war && \
-  rm -rf /newartifactory
+# Add hook to install custom artifactory.war (i.e. Artifactory Pro) to replace the default OSS installation.
+ONBUILD ADD ./artifactory.war /tomcat/webapps/
 
-# Make memory settings overridable with environment variables.
-# Override with -e MEM_INIT=... and -e MEM_MAX=... when starting a container.
-RUN sed -i -e 's/Xms512m/Xms${MEM_INIT-512m}/g' -e 's/Xmx2g/Xmx${MEM_MAX-2g}/g' artifactory/bin/artifactory.default
+# Expose tomcat runtime options through the RUNTIME_OPTS environment variable.
+#   Example to set the JVM's max heap size to 256MB use the flag
+#   '-e RUNTIME_OPTS="-Xmx256m"' when starting a container.
+RUN echo 'export CATALINA_OPTS="$RUNTIME_OPTS"' > /tomcat/bin/setenv.sh
 
-# Expose Artifactories data directory (database & artifacts)
+# Artifactory home
+RUN mkdir -p /artifactory
+ENV ARTIFACTORY_HOME /artifactory
+
+# Expose Artifactories data, log and backup directory.
 VOLUME /artifactory/data
 VOLUME /artifactory/logs
 VOLUME /artifactory/backup
 
-# Default port to Artifactories web interface.
-EXPOSE 8081 
-
 WORKDIR /artifactory
-
-CMD ["/artifactory/bin/artifactory.sh"]
-
