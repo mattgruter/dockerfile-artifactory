@@ -6,7 +6,10 @@ MAINTAINER Matthias Grüter <matthias@grueter.name>
 ENV DEBIAN_FRONTEND noninteractive
 
 # Unzip is needed to install Artifactory.
-RUN apt-get -y install unzip
+# (we first need to recreate the apt package index as it has been removed from the base image)
+RUN apt-get update && \
+    apt-get install -y unzip && \
+    rm -rf /var/lib/apt/lists/*
 
 # Disable Tomcat's manager application.
 RUN rm -rf /tomcat/webapps/*
