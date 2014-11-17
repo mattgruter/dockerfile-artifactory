@@ -20,7 +20,7 @@ RUN echo '<html><head><meta http-equiv="refresh" content="0;URL=artifactory/"></
 
 # Fetch and install Artifactory OSS war archive.
 RUN \
-  wget --quiet http://dl.bintray.com/jfrog/artifactory/artifactory-3.3.0.zip -O artifactory.zip && \
+  wget --quiet http://dl.bintray.com/jfrog/artifactory/artifactory-3.4.1.zip -O artifactory.zip && \
   unzip -j artifactory.zip "artifactory-*/webapps/artifactory.war" -d /tomcat/webapps && \
   rm artifactory.zip
 
