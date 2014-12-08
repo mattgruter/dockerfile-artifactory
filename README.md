@@ -23,7 +23,7 @@ The web server is accessible through port `8080`.
 You will need to provide the image with a mySQL 5.5 server or newer. The simplest way to do this is using the
 [mysql-tuned-for-artifactory](https://registry.hub.docker.com/u/soilandreyes/mysql-tuned-for-artifactory/) image:
 
-    docker run --name mysql-for-artifactory mysql-for-artifactory
+    docker run --name mysql-for-artifactory soilandreyes/mysql-for-artifactory
 
 Then run artifactory:
 
