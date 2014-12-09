@@ -2,6 +2,10 @@ FROM tomcat:7-jre7
 
 MAINTAINER Matthias Grüter <matthias@grueter.name>
 
+# To update, check https://bintray.com/jfrog/artifactory/artifactory/view
+ENV ARTIFACTORY_VERSION 3.4.2
+ENV ARTIFACTORY_SHA1 394258c5fc8beffd60de821b6264660f5464b943
+
 # Disable Tomcat's manager application.
 RUN rm -rf webapps/*
 
@@ -11,7 +15,9 @@ RUN echo '<html><head><meta http-equiv="refresh" content="0;URL=artifactory/"></
 
 # Fetch and install Artifactory OSS war archive.
 RUN \
-  wget -v https://bintray.com/artifact/download/jfrog/artifactory/artifactory-3.4.2.zip -O artifactory.zip && \
+  echo $ARTIFACTORY_SHA1 artifactory.zip > artifactory.zip.sha1 && \
+  curl -L -o artifactory.zip https://bintray.com/artifact/download/jfrog/artifactory/artifactory-${ARTIFACTORY_VERSION}.zip && \
+  sha1sum -c artifactory.zip.sha1 && \
   unzip -j artifactory.zip "artifactory-*/webapps/artifactory.war" -d webapps && \
   rm artifactory.zip
 
