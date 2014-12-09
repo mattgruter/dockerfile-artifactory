@@ -23,15 +23,20 @@ The web server is accessible through port `8080`.
 You will need to provide the image with a mySQL 5.5 server or newer. The simplest way to do this is using the
 [mysql-tuned-for-artifactory](https://registry.hub.docker.com/u/soilandreyes/mysql-tuned-for-artifactory/) image:
 
-    docker run --name mysql-for-artifactory soilandreyes/mysql-for-artifactory
+    docker run --name mysql-for-artifactory-data -v /var/lib/mysql busybox
+    docker run -d --volumes-from mysql-for-artifactory-data --name mysql-for-artifactory soilandreyes/mysql-for-artifactory
 
-Then run artifactory:
+Wait a few seconds for mySQL to initialize, then run artifactory:
 
     docker run --name artifactory --link mysql-for-artifactory:mysql -p 8080:8080 soilandreyes/artifactory-with-mysql
 
 Now point your browser to http://localhost:8080/ to use Artifactory.
 
+If your Artifactory is being used for deploying artifacts, you probably also want to keep the 
+`/artifactory/data` as a separate volume container:
 
+    docker run --name artifactory-data -v /artifactory/data busybox
+    docker run --name artifactory --volumes-from artifactory-data --link mysql-for-artifactory:mysql -p 8080:8080 soilandreyes/artifactory-with-mysql
 
 ## Runtime options
 Inject the environment variable `RUNTIME_OPTS` when starting a container to set Tomcat's runtime options (i.e. `CATALANA_OPTS`). The most common use case is to set the heap size:
