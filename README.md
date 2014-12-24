@@ -20,7 +20,11 @@ To run artifactory do:
 
     docker run -p 8080:8080 mattgruter/artifactory
 
-Now point your browser to http://localhost:8080.
+Now point your browser to http://localhost:8080
+
+
+## URLs
+The artifactory servlet is available at the `artifactory/` path. However a filter redirects all paths outside of `artifactory/` to the artifactory servlet. Thus instead of linking to the URL http://localhost:8080/artifactory/libs-release-local you can just link to http://localhost:8080/libs-release-local (i.e. omitting the subpath `artifactory/`).
 
 ## Runtime options
 Inject the environment variable `RUNTIME_OPTS` when starting a container to set Tomcat's runtime options (i.e. `CATALANA_OPTS`). The most common use case is to set the heap size:

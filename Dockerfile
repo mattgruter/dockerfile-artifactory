@@ -9,9 +9,13 @@ ENV ARTIFACTORY_SHA1 394258c5fc8beffd60de821b6264660f5464b943
 # Disable Tomcat's manager application.
 RUN rm -rf webapps/*
 
-# Redirect to the Artifactory servlet from root.
-RUN mkdir webapps/ROOT
-RUN echo '<html><head><meta http-equiv="refresh" content="0;URL=artifactory/"></head><body></body></html>' > webapps/ROOT/index.html
+# Redirect URL from / to artifactory/ using UrlRewriteFilter
+COPY urlrewrite/WEB-INF/lib/urlrewritefilter.jar /
+COPY urlrewrite/WEB-INF/urlrewrite.xml /
+RUN \
+  mkdir -p webapps/ROOT/WEB-INF/lib && \
+  mv /urlrewritefilter.jar webapps/ROOT/WEB-INF/lib && \
+  mv /urlrewrite.xml webapps/ROOT/WEB-INF/
 
 # Fetch and install Artifactory OSS war archive.
 RUN \
