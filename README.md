@@ -39,7 +39,7 @@ If you are using Artifactory Pro, the artifactory war archive has to be replaced
 
 Now build your child docker image:
 
-    docker build -t yourname/myartifactory
+    docker build -t yourname/myartifactory .
 
 The `ONBUILD` trigger makes sure that your `artifactory.war` is picked up and applied to the image upon build.
 
