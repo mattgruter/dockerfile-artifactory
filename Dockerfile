@@ -3,8 +3,8 @@ FROM tomcat:7-jre7
 MAINTAINER Matthias Grüter <matthias@grueter.name>
 
 # To update, check https://bintray.com/jfrog/artifactory/artifactory/view
-ENV ARTIFACTORY_VERSION 3.5.2.1
-ENV ARTIFACTORY_SHA1 5461c7902333512e22e8a50ed6608223756b042b
+ENV ARTIFACTORY_VERSION 3.5.3
+ENV ARTIFACTORY_SHA1 2d7daaa3272faacbc24cf3f96368a53a3e9286e0
 
 # Disable Tomcat's manager application.
 RUN rm -rf webapps/*
