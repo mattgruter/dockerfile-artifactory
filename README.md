@@ -36,7 +36,7 @@ If you are using Artifactory Pro, the artifactory war archive has to be replaced
 
     # Dockerfile for Artifactory Pro
     FROM mattgruter/artifactory
-    ADD ./artifactory.war /tomcat/webapps
+    ADD ./artifactory.war /usr/local/tomcat/webapps
 
 Now build your child docker image:
 
