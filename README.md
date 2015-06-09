@@ -36,11 +36,12 @@ If you are using Artifactory Pro, the artifactory war archive has to be replaced
 
     # Dockerfile for Artifactory Pro
     FROM mattgruter/artifactory
+    ADD ./artifactory.war /usr/local/tomcat/webapps
 
 Now build your child docker image:
 
     docker build -t yourname/myartifactory
 
-The `ONBUILD` trigger makes sure that your `artifactory.war` is picked up and applied to the image upon build.
+The ADD ensures your `artifactory.war` is picked up and applied to the image upon build.
 
     docker run -P yourname/myartifactory
