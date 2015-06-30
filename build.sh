@@ -5,8 +5,9 @@ function build_vanilla() {
 }
 
 function build_onbuild() {
-    cat Dockerfile onbuild > Dockerfile.onbuild
-    docker build -t mattgruter/artifactory:latest-onbuild -f Dockerfile.onbuild .
+    cp --no-target-directory --recursive urlrewrite/ onbuild/urlrewrite
+    cat Dockerfile onbuild/trigger > onbuild/Dockerfile
+    docker build -t mattgruter/artifactory:latest-onbuild onbuild
 }
 
 build_vanilla

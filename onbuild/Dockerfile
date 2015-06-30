@@ -41,4 +41,4 @@ VOLUME /artifactory/backup
 
 WORKDIR /artifactory
 # Add hook to install custom artifactory.war (i.e. Artifactory Pro) to replace OSS distribution.
-ONBUILD ADD ./artifactory.war /usr/local/tomcat/webapps
+ONBUILD COPY artifactory.war /usr/local/tomcat/webapps/artifactory.war
