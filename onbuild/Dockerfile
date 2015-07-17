@@ -3,8 +3,8 @@ FROM tomcat:7-jre7
 MAINTAINER Matthias Grüter <matthias@grueter.name>
 
 # To update, check https://bintray.com/jfrog/artifactory/artifactory/view
-ENV ARTIFACTORY_VERSION 3.9.1
-ENV ARTIFACTORY_SHA1 9ab406907c7e3f5b8cd7375c964b2bab0cced368
+ENV ARTIFACTORY_VERSION 3.9.2
+ENV ARTIFACTORY_SHA1 245aeb7b2d77830462067d5a19c3bd32ae014ddf
 
 # Disable Tomcat's manager application.
 RUN rm -rf webapps/*
@@ -41,4 +41,4 @@ VOLUME /artifactory/backup
 
 WORKDIR /artifactory
 # Add hook to install custom artifactory.war (i.e. Artifactory Pro) to replace OSS distribution.
-ONBUILD COPY artifactory.war /usr/local/tomcat/webapps/artifactory.war
+ONBUILD COPY artifactory.war $CATALINA_HOME/webapps/artifactory.war
