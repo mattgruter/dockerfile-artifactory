@@ -1,4 +1,4 @@
-FROM tomcat:7-jre7
+FROM tomcat:8-jre8
 
 MAINTAINER Jay Kline <jay@slushpupie.com>
 
@@ -17,12 +17,14 @@ RUN rm -rf webapps/*
 #  mv /urlrewritefilter.jar webapps/ROOT/WEB-INF/lib && \
 #  mv /urlrewrite.xml webapps/ROOT/WEB-INF/
 
+RUN mkdir -p webapps/ROOT
 # Fetch and install Artifactory OSS war archive.
 RUN \
   echo $ARTIFACTORY_SHA1 artifactory.zip > artifactory.zip.sha1 && \
   curl -L -o artifactory.zip https://bintray.com/artifact/download/jfrog/artifactory/jfrog-artifactory-oss-${ARTIFACTORY_VERSION}.zip && \
   sha1sum -c artifactory.zip.sha1 && \
   unzip -j artifactory.zip "artifactory-*/webapps/artifactory.war" -d webapps && \
+  unzip -j artifactory.zip "artifactory-*/tomcat/webapps/ROOT/index.html" -d webapps/ROOT && \
   rm artifactory.zip
 
 # Expose tomcat runtime options through the RUNTIME_OPTS environment variable.
