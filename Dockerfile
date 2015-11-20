@@ -10,12 +10,12 @@ ENV ARTIFACTORY_SHA1 89379f34023317c55eb6d7d587ca8607f79511ef
 RUN rm -rf webapps/*
 
 # Redirect URL from / to artifactory/ using UrlRewriteFilter
-COPY urlrewrite/WEB-INF/lib/urlrewritefilter.jar /
-COPY urlrewrite/WEB-INF/urlrewrite.xml /
-RUN \
-  mkdir -p webapps/ROOT/WEB-INF/lib && \
-  mv /urlrewritefilter.jar webapps/ROOT/WEB-INF/lib && \
-  mv /urlrewrite.xml webapps/ROOT/WEB-INF/
+#COPY urlrewrite/WEB-INF/lib/urlrewritefilter.jar /
+#COPY urlrewrite/WEB-INF/urlrewrite.xml /
+#RUN \
+#  mkdir -p webapps/ROOT/WEB-INF/lib && \
+#  mv /urlrewritefilter.jar webapps/ROOT/WEB-INF/lib && \
+#  mv /urlrewrite.xml webapps/ROOT/WEB-INF/
 
 # Fetch and install Artifactory OSS war archive.
 RUN \
