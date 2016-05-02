@@ -1,6 +1,6 @@
 
 node("docker") {
-  scm checkout
+  checkout scm
   stage 'build'
   docker.build('slushpupie/artifactory').push()
 }
